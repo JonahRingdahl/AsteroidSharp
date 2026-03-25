@@ -4,16 +4,22 @@ using Raylib_CSharp.Rendering;
 
 namespace AsteroidSharp.Models.Shapes;
 
-
 class EnemyShape : IShape
 {
     private Vector2 _pos;
     private Vector2 _bounds;
     private Color _color;
 
-
-    public Vector2[] Corners { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public Color ShapeColor { get => _color; set => _color = value; }
+    public Vector2[] Corners
+    {
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
+    }
+    public Color ShapeColor
+    {
+        get => _color;
+        set => _color = value;
+    }
     public ActorState State { get; set; }
 
     public EnemyShape(Vector2 bounds, Color color, Vector2 pos)

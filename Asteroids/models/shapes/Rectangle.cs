@@ -1,6 +1,6 @@
-using Raylib_CSharp.Rendering;
-using Raylib_CSharp.Colors;
 using System.Numerics;
+using Raylib_CSharp.Colors;
+using Raylib_CSharp.Rendering;
 
 namespace AsteroidSharp.Models.Shapes;
 
@@ -12,8 +12,16 @@ class Rect : IShape
     private Vector2 _bounds;
     private Color _color;
 
-    public Vector2[] Corners { get => globalCoordinates; private set => globalCoordinates = value; }
-    public Color ShapeColor { get => _color; private set => _color = value; }
+    public Vector2[] Corners
+    {
+        get => globalCoordinates;
+        private set => globalCoordinates = value;
+    }
+    public Color ShapeColor
+    {
+        get => _color;
+        private set => _color = value;
+    }
     public ActorState State { get; set; }
 
     public Rect(Vector2 bounds, Color color)
@@ -30,17 +38,40 @@ class Rect : IShape
         ShapeColor = color;
     }
 
-
     public void DrawShape()
     {
         // ab
-        Graphics.DrawLine((int)globalCoordinates[0].X, (int)globalCoordinates[0].Y, (int)globalCoordinates[1].X, (int)globalCoordinates[1].Y, _color);
+        Graphics.DrawLine(
+            (int)globalCoordinates[0].X,
+            (int)globalCoordinates[0].Y,
+            (int)globalCoordinates[1].X,
+            (int)globalCoordinates[1].Y,
+            _color
+        );
         // ac
-        Graphics.DrawLine((int)globalCoordinates[0].X, (int)globalCoordinates[0].Y, (int)globalCoordinates[2].X, (int)globalCoordinates[2].Y, _color);
+        Graphics.DrawLine(
+            (int)globalCoordinates[0].X,
+            (int)globalCoordinates[0].Y,
+            (int)globalCoordinates[2].X,
+            (int)globalCoordinates[2].Y,
+            _color
+        );
         // bd
-        Graphics.DrawLine((int)globalCoordinates[1].X, (int)globalCoordinates[1].Y, (int)globalCoordinates[3].X, (int)globalCoordinates[3].Y, _color);
+        Graphics.DrawLine(
+            (int)globalCoordinates[1].X,
+            (int)globalCoordinates[1].Y,
+            (int)globalCoordinates[3].X,
+            (int)globalCoordinates[3].Y,
+            _color
+        );
         // cd
-        Graphics.DrawLine((int)globalCoordinates[2].X, (int)globalCoordinates[2].Y, (int)globalCoordinates[3].X, (int)globalCoordinates[3].Y, _color);
+        Graphics.DrawLine(
+            (int)globalCoordinates[2].X,
+            (int)globalCoordinates[2].Y,
+            (int)globalCoordinates[3].X,
+            (int)globalCoordinates[3].Y,
+            _color
+        );
     }
 
     public Vector2 RotateShape(Vector2 pos, float rotateSpeed)
@@ -53,9 +84,11 @@ class Rect : IShape
         for (int i = 0; i < localCoordinates.Length; i++)
         {
             newCoords[i] = new Vector2(
-                localCoordinates[i].X * MathF.Cos(thetaRadians) - localCoordinates[i].Y * MathF.Sin(thetaRadians),
-                localCoordinates[i].X * MathF.Sin(thetaRadians) + localCoordinates[i].Y * MathF.Cos(thetaRadians)
-                );
+                localCoordinates[i].X * MathF.Cos(thetaRadians)
+                    - localCoordinates[i].Y * MathF.Sin(thetaRadians),
+                localCoordinates[i].X * MathF.Sin(thetaRadians)
+                    + localCoordinates[i].Y * MathF.Cos(thetaRadians)
+            );
         }
 
         localCoordinates = newCoords;
@@ -84,10 +117,18 @@ class Rect : IShape
             var diffToC = point - Corners[2];
             var diffToD = point - Corners[3];
 
-            var thetaAB = MathF.Acos(Vector2.Dot(diffToA, diffToB) / (diffToA.Length() * diffToB.Length()));
-            var thetaBD = MathF.Acos(Vector2.Dot(diffToB, diffToD) / (diffToB.Length() * diffToD.Length()));
-            var thetaAC = MathF.Acos(Vector2.Dot(diffToA, diffToC) / (diffToA.Length() * diffToC.Length()));
-            var thetaCD = MathF.Acos(Vector2.Dot(diffToC, diffToD) / (diffToC.Length() * diffToD.Length()));
+            var thetaAB = MathF.Acos(
+                Vector2.Dot(diffToA, diffToB) / (diffToA.Length() * diffToB.Length())
+            );
+            var thetaBD = MathF.Acos(
+                Vector2.Dot(diffToB, diffToD) / (diffToB.Length() * diffToD.Length())
+            );
+            var thetaAC = MathF.Acos(
+                Vector2.Dot(diffToA, diffToC) / (diffToA.Length() * diffToC.Length())
+            );
+            var thetaCD = MathF.Acos(
+                Vector2.Dot(diffToC, diffToD) / (diffToC.Length() * diffToD.Length())
+            );
 
             float sumAngle = thetaAB + thetaBD + thetaAC + thetaCD;
 

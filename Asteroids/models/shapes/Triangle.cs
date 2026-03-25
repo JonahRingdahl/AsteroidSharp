@@ -1,6 +1,6 @@
-using Raylib_CSharp.Rendering;
-using Raylib_CSharp.Colors;
 using System.Numerics;
+using Raylib_CSharp.Colors;
+using Raylib_CSharp.Rendering;
 
 namespace AsteroidSharp.Models.Shapes;
 
@@ -14,10 +14,22 @@ class Triangle : IShape
 
     private Vector2 _bounds;
 
-    public Vector2[] Corners { get => globalCoordinates; private set => globalCoordinates = value; }
+    public Vector2[] Corners
+    {
+        get => globalCoordinates;
+        private set => globalCoordinates = value;
+    }
 
-    public Vector2 Bounds { get => _bounds; private set => _bounds = value; }
-    public Color ShapeColor { get => _color; set => _color = value; }
+    public Vector2 Bounds
+    {
+        get => _bounds;
+        private set => _bounds = value;
+    }
+    public Color ShapeColor
+    {
+        get => _color;
+        set => _color = value;
+    }
     public ActorState State { get; set; }
 
     public Triangle(Vector2 bounds, Vector2 orientation, Color color)
@@ -38,7 +50,12 @@ class Triangle : IShape
 
     public void DrawShape()
     {
-        Graphics.DrawTriangleLines(globalCoordinates[0], globalCoordinates[1], globalCoordinates[2], _color);
+        Graphics.DrawTriangleLines(
+            globalCoordinates[0],
+            globalCoordinates[1],
+            globalCoordinates[2],
+            _color
+        );
     }
 
     public Vector2 RotateShape(Vector2 pos, float degreesRotatedPerIteration)
@@ -51,9 +68,11 @@ class Triangle : IShape
         for (int i = 0; i < localCoordinates.Length; i++)
         {
             newCoords[i] = new Vector2(
-                localCoordinates[i].X * MathF.Cos(thetaRadians) - localCoordinates[i].Y * MathF.Sin(thetaRadians),
-                localCoordinates[i].X * MathF.Sin(thetaRadians) + localCoordinates[i].Y * MathF.Cos(thetaRadians)
-                );
+                localCoordinates[i].X * MathF.Cos(thetaRadians)
+                    - localCoordinates[i].Y * MathF.Sin(thetaRadians),
+                localCoordinates[i].X * MathF.Sin(thetaRadians)
+                    + localCoordinates[i].Y * MathF.Cos(thetaRadians)
+            );
         }
 
         localCoordinates = newCoords;
@@ -81,15 +100,20 @@ class Triangle : IShape
             var diffToB = point - Corners[1];
             var diffToC = point - Corners[2];
 
-            var thetaAB = MathF.Acos(Vector2.Dot(diffToA, diffToB) / (diffToA.Length() * diffToB.Length()));
-            var thetaBC = MathF.Acos(Vector2.Dot(diffToB, diffToC) / (diffToB.Length() * diffToC.Length()));
-            var thetaAC = MathF.Acos(Vector2.Dot(diffToA, diffToC) / (diffToA.Length() * diffToC.Length()));
+            var thetaAB = MathF.Acos(
+                Vector2.Dot(diffToA, diffToB) / (diffToA.Length() * diffToB.Length())
+            );
+            var thetaBC = MathF.Acos(
+                Vector2.Dot(diffToB, diffToC) / (diffToB.Length() * diffToC.Length())
+            );
+            var thetaAC = MathF.Acos(
+                Vector2.Dot(diffToA, diffToC) / (diffToA.Length() * diffToC.Length())
+            );
 
             float sumAngle = thetaAB + thetaAC + thetaBC;
 
             if (MathF.Abs(sumAngle - 2 * MathF.PI) < 1e-5)
                 return true;
-
         }
         return false;
     }

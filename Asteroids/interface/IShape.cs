@@ -11,10 +11,10 @@ public interface IShape
     public void DrawShape();
     public Vector2 RotateShape(Vector2 pos, float rotateSpeed);
     public bool Collision(Vector2[] points);
-
 }
 
-public enum ActorState {
+public enum ActorState
+{
     Active,
     Destroyed
 }

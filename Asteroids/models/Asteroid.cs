@@ -1,9 +1,7 @@
 using System.Diagnostics;
-
-using Raylib_CSharp.Colors;
 using System.Numerics;
 using AsteroidSharp.Models.Shapes;
-using System.Security.Principal;
+using Raylib_CSharp.Colors;
 
 namespace AsteroidSharp.Models;
 
@@ -26,12 +24,32 @@ public class Asteroid
     private int _scale;
     private AsteroidState _asteroidState = AsteroidState.Large;
 
-    public Vector2 Position { get => _position; private set => _position = value; }
-    public Vector2 Heading { get => _heading; private set => _heading = value; }
-    public IShape? Shape { get => _shape; }
-    public int Scale { get => _scale; }
-    public float Speed { get => _speed; }
-    public AsteroidState State { get => _asteroidState; }
+    public Vector2 Position
+    {
+        get => _position;
+        private set => _position = value;
+    }
+    public Vector2 Heading
+    {
+        get => _heading;
+        private set => _heading = value;
+    }
+    public IShape? Shape
+    {
+        get => _shape;
+    }
+    public int Scale
+    {
+        get => _scale;
+    }
+    public float Speed
+    {
+        get => _speed;
+    }
+    public AsteroidState State
+    {
+        get => _asteroidState;
+    }
 
     public Asteroid() { }
 
@@ -83,12 +101,19 @@ public class Asteroid
 
         _shape!.UpdateShape(_position);
 
-        _heading = new Vector2(rng.NextSingle() - rng.NextSingle(), rng.NextSingle() - rng.NextSingle());
+        _heading = new Vector2(
+            rng.NextSingle() - rng.NextSingle(),
+            rng.NextSingle() - rng.NextSingle()
+        );
     }
 
     #region Private Methods
 
-    public (Vector2, Vector2) FindSpawnPointAsteroid(Vector2 origin, (int, int) worldDimensions, float angleTheta)
+    public (Vector2, Vector2) FindSpawnPointAsteroid(
+        Vector2 origin,
+        (int, int) worldDimensions,
+        float angleTheta
+    )
     {
         (double m, int b) = LineEquation(origin, angleTheta);
 
@@ -97,7 +122,13 @@ public class Asteroid
         return spawn;
     }
 
-    private (Vector2, Vector2) SpawnPoint(Vector2 origin, (int, int) worldDimensions, float angleTheta, double m, int b)
+    private (Vector2, Vector2) SpawnPoint(
+        Vector2 origin,
+        (int, int) worldDimensions,
+        float angleTheta,
+        double m,
+        int b
+    )
     {
         (var windowWidth, var windowHeight) = worldDimensions;
         Vector2 collision = Vector2.Zero;
@@ -121,14 +152,14 @@ public class Asteroid
 
         if (m == 0)
         {
-            if(angleTheta == Math.PI)
+            if (angleTheta == Math.PI)
             {
-                collision = new Vector2(0,origin.Y); 
+                collision = new Vector2(0, origin.Y);
                 return (collision, -Vector2.UnitX);
             }
             else
             {
-                collision = new Vector2(windowWidth,origin.Y);
+                collision = new Vector2(windowWidth, origin.Y);
                 return (collision, Vector2.UnitX);
             }
         }
@@ -137,19 +168,19 @@ public class Asteroid
         if (angleTheta >= 0 && angleTheta < Math.PI / 2)
         {
             //must intersect with top or right
-            
+
             // y = mx + b
             // right window = y = width
-            var y = m*windowWidth + b;
-            if(y >= 0 && y <= windowHeight)
+            var y = m * windowWidth + b;
+            if (y >= 0 && y <= windowHeight)
             {
                 // the case that right window border is collided and not negative
                 collision = new Vector2(windowWidth, (float)y);
-                return (collision,  CalculateHeading(origin, collision));
+                return (collision, CalculateHeading(origin, collision));
             }
-            
+
             // m should never be zero
-            var x = b/m;
+            var x = b / m;
 
             if (x >= 0 && x <= windowWidth)
             {
@@ -171,7 +202,7 @@ public class Asteroid
                 return (collision, CalculateHeading(origin, collision));
             }
 
-            var x = b/m;
+            var x = b / m;
             if (x >= 0 && x < windowWidth)
             {
                 collision = new Vector2((float)x, 0);
@@ -202,7 +233,7 @@ public class Asteroid
         if (angleTheta >= 3 * Math.PI / 2 && angleTheta < 2 * Math.PI)
         {
             // must intersect with bottom or right
-            var y = m*windowWidth + b;
+            var y = m * windowWidth + b;
             if (y >= 0 && y <= windowHeight)
             {
                 collision = new Vector2(windowWidth, (float)y);
@@ -225,7 +256,11 @@ public class Asteroid
         double slope;
         int intercept;
 
-        if (Math.Tan(angleTheta) - double.MaxValue < 1e-10 && angleTheta != 0 && angleTheta != MathF.PI)
+        if (
+            Math.Tan(angleTheta) - double.MaxValue < 1e-10
+            && angleTheta != 0
+            && angleTheta != MathF.PI
+        )
         {
             slope = double.NaN;
             intercept = int.MaxValue;
@@ -236,7 +271,7 @@ public class Asteroid
             intercept = (int)(point.Y - slope * point.X);
         }
 
-        return (slope,intercept);
+        return (slope, intercept);
     }
 
     private Vector2 CalculateHeading(Vector2 origin, Vector2 intercept)
@@ -316,21 +351,21 @@ public class Asteroid
         return rectangleAsteroid;
     }
 
-    public (Vector2, Vector2) DebugAsteroidSpawn(Vector2 origin, (int, int) worldDimensions, float angleTheta)
+    public (Vector2, Vector2) DebugAsteroidSpawn(
+        Vector2 origin,
+        (int, int) worldDimensions,
+        float angleTheta
+    )
     {
         (Vector2, Vector2) spawn = FindSpawnPointAsteroid(origin, worldDimensions, angleTheta);
 
         return spawn;
     }
 
-    public void ExplodeAsteroid()
-    {
-
-    }
+    public void ExplodeAsteroid() { }
 
     public static Asteroid DebugTriangleAsteroidSpawner()
     {
-
         var triangleAsteroid = new Asteroid()
         {
             _position = Vector2.Zero,
@@ -341,5 +376,4 @@ public class Asteroid
     }
 
     #endregion
-
 }

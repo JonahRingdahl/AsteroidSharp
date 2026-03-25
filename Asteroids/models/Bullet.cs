@@ -1,5 +1,4 @@
 using System.Numerics;
-
 using AsteroidSharp.Models.Shapes;
 using Raylib_CSharp.Colors;
 
@@ -12,10 +11,20 @@ class Bullet(Vector2 pos, Vector2 heading, Color color, float speed, bool fromPl
     private Vector2 _heading = heading;
     private Color _color = color;
     private float _bulletspeed = speed;
-    public Vector2 Position { get => _position; set => _position = value; }
+    public Vector2 Position
+    {
+        get => _position;
+        set => _position = value;
+    }
     public bool FromPlayer = fromPlayer;
-    public Vector2[] Corners { get => _shape.Corners; }
-    public IShape Shape { get => _shape; }
+    public Vector2[] Corners
+    {
+        get => _shape.Corners;
+    }
+    public IShape Shape
+    {
+        get => _shape;
+    }
 
     public void DrawBullet()
     {
@@ -42,7 +51,6 @@ class Bullet(Vector2 pos, Vector2 heading, Color color, float speed, bool fromPl
 
     public void DebugPrinter()
     {
-
         string output = "Bullet Position List: ";
         foreach (var coord in this._shape.Corners)
         {
