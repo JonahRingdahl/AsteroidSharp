@@ -54,11 +54,7 @@ public class Game
         windowDimensions = dimensions;
         asteroids = new List<Asteroid>();
 
-        for (int i = 0; i < lives.Count(); i++)
-        {
-            lives[i].UpdateShape(new Vector2(10 * i + 10, 40));
-        }
-
+        player = new Player(new Vector2(windowDimensions.Item1 / 3, windowDimensions.Item2 / 3), Vector2.Zero, windowDimensions);
         // handles the spawning of asteroids
         asteroidSpawnTimer.Elapsed += async (sender, e) => await SpawnAnotherAsteroid(Vector2.Zero);
 
@@ -148,10 +144,8 @@ public class Game
 
     private void DrawLives()
     {
-        foreach (var life in lives)
-        {
-            life.DrawShape();
-        }
+        for (int i = 0; i < player.Lives.Count; i++)
+            player.Lives.Peek().DrawShape();
     }
 
     private void DrawStartMenu()
@@ -331,6 +325,8 @@ public class Game
         // move all Asteroids
         for (int i = 0; i < asteroids.Count; i++)
         {
+            // TODO Some asteroids are able to be collided with twice
+
             var currentAsteroid = asteroids[i];
 
             if (
@@ -347,13 +343,15 @@ public class Game
             if (currentAsteroid.CheckCollisions(player!.Corners))
             {
                 // Runs Game over
-                if (player.Lives == 0)
+                if (player.Lives.Count == 0)
                 {
                     asteroidSpawnTimer.Enabled = false;
                     playerShootLockoutTimer.Enabled = false;
                     state = GameState.GameOver;
                     RunGameOver();
                 }
+                else
+                    player.RemoveLife();
 
                 // Check for asteroids in the area and respawn player
                 Random rng = new();
@@ -371,9 +369,6 @@ public class Game
                         asteroid.CheckCollisions(player.Corners)
                     );
                 } while (collidedAsteroids is not null);
-
-                lives.RemoveAt(player.Lives);
-                player.Lives--;
             }
         }
     }

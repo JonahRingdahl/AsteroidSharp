@@ -9,7 +9,6 @@ namespace AsteroidSharp.Models;
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
 class Player
 {
-    // oriented up
     private Color _color = Color.White;
     private Vector2 _heading;
     private Vector2 _position;
@@ -174,6 +173,20 @@ class Player
         return false;
     }
 
+    public void AddLife(int count = 4)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            Console.WriteLine("Life Added");
+            Lives.Enqueue(new Triangle(new Vector2(6, 2), Vector2.UnitY, Color.White));
+        }
+    }
+
+    public void RemoveLife()
+    {
+        Lives.Dequeue();
+    }
+
     public Task EnableShooting()
     {
         _canShoot = true;
@@ -184,6 +197,5 @@ class Player
     {
         _position = pos;
     }
-
     #endregion
 }
