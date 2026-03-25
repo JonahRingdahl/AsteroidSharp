@@ -178,14 +178,11 @@ class Player
         for (int i = 0; i < count; i++)
         {
             Console.WriteLine("Life Added");
-            Lives.Enqueue(new Triangle(new Vector2(6, 2), Vector2.UnitY, Color.White));
+            lives += 1;
         }
     }
 
-    public void RemoveLife()
-    {
-        Lives.Dequeue();
-    }
+    public void RemoveLife() => lives -= 1;
 
     public Task EnableShooting()
     {

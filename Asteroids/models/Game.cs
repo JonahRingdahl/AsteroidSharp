@@ -144,8 +144,8 @@ public class Game
 
     private void DrawLives()
     {
-        for (int i = 0; i < player.Lives.Count; i++)
-            player.Lives.Peek().DrawShape();
+        for (int i = 0; i < lives.Count; i++)
+            lives[i].DrawShape();
     }
 
     private void DrawStartMenu()
@@ -343,7 +343,7 @@ public class Game
             if (currentAsteroid.CheckCollisions(player!.Corners))
             {
                 // Runs Game over
-                if (player.Lives.Count == 0)
+                if (player.Lives == 0)
                 {
                     asteroidSpawnTimer.Enabled = false;
                     playerShootLockoutTimer.Enabled = false;
