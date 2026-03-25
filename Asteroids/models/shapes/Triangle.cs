@@ -40,8 +40,8 @@ class Triangle : IShape
         localCoordinates = new Vector2[numCorners]
         {
             orientation * -_bounds.X,
-            new Vector2(-_bounds.Y, bounds.X / 2),
-            new Vector2(_bounds.Y, bounds.X / 2)
+            new(-_bounds.Y, bounds.X / 2),
+            new(_bounds.Y, bounds.X / 2)
         };
 
         _color = color;
